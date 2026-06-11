@@ -1,6 +1,6 @@
 <div align="center">
 
-# 💌 ** KooL's Arch - Hyprland Install Script ** 💌
+# 💌 ** KooL's Arch - Hyprland Install Script (ported for Artix)** 💌
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/LinuxBeginnings/Hyprland-Dots/main/assets/latte.png" width="400" />
@@ -63,7 +63,7 @@ https://github.com/user-attachments/assets/49bc12b2-abaf-45de-a21c-67aacd9bb872
 - This fork is meant only for openrc currently.
 - I plan to do dinit as well in the future, although runit and s6 will likely not be done.
 
-- This Repo does not contain Hyprland Dots or configs! Dotfiles can be checked here [`Hyprland-Dots`](https://github.com/LinuxBeginnings/Hyprland-Dots) . During installation, if you opt to copy pre-configured dots, it will be downloaded from that centralized repo.
+- This Repo does not contain Hyprland Dots or configs! Dotfiles can be checked here [`Hyprland-Dots`](https://github.com/LinuxBeginnings/Hyprland-Dots) . During installation, if you opt to copy pre-configured dots, it will be downloaded from that centralized repo. (**NOTE: For artix these very likely will cause issues due to some scripts having systemd commands in them, These will have to be manually ported!**)
 - Hyprland-Dots use are constantly evolving / improving. you can check CHANGELOGS here [`Hyprland-Dots-Changelogs`](https://github.com/LinuxBeginnings/Hyprland-Dots/wiki/Changelogs)
 - Since the Hyprland-Dots are evolving, some of the screenshots maybe old
 - the wallpaper offered to be downloaded towards the end is from this [`REPO`](https://github.com/LinuxBeginnings/Wallpaper-Bank)
@@ -90,7 +90,7 @@ https://github.com/user-attachments/assets/49bc12b2-abaf-45de-a21c-67aacd9bb872
 #### 🚩 Switching to SDDM assuming you have GDM installed and running
 
 - if you really want switch to SDDM from GDM, you need to disable the gdm first.
-- `sudo systemctl disable gdm.service` then reboot
+- `sudo rc-update del gdm.service` then reboot
 - after reboot, need to ran the install script via tty. So suggest download the install script first. Then disable gdm. reboot and once logged in, cd into Distro-Hyprland then `./install.sh` and then choose SDDM and SDDM theme in the options.
 - NOTE: Distro-Hyprland is Arch-Hyprland, or Fedora-Hyprland .. depends on which install scripts you downloaded.
 
@@ -117,7 +117,7 @@ https://github.com/user-attachments/assets/49bc12b2-abaf-45de-a21c-67aacd9bb872
 - NOTE: `curl` package is required before running this command
 
 ```bash
-sh <(curl -L https://raw.githubusercontent.com/LinuxBeginnings/Arch-Hyprland/main/auto-install.sh)
+sh <(curl -L https://raw.githubusercontent.com/NKillHere/Artix-Hyprland/main/auto-install.sh)
 ```
 
 ## ✨ to use this script
@@ -125,8 +125,8 @@ sh <(curl -L https://raw.githubusercontent.com/LinuxBeginnings/Arch-Hyprland/mai
 - clone this repo (latest commit only) to reduce file size download by using git. Change directory, make executable and run the script
 
 ```bash
-git clone --depth=1 https://github.com/LinuxBeginnings/Arch-Hyprland.git ~/Arch-Hyprland
-cd ~/Arch-Hyprland
+git clone --depth=1 https://github.com/NKillHere/Artix-Hyprland.git ~/Arch-Hyprland
+cd ~/Artix-Hyprland
 chmod +x install.sh
 ./install.sh
 ```
@@ -191,25 +191,26 @@ source ~/.zshrc
 > [!IMPORTANT]
 > DO NOT cd into install-scripts directory as script will most likely to fail
 
-#### 🛠️ Optional system monitor scripts (cross-distro compatible)
+#### 🛠️ Optional system monitor scripts 
 
 - These installer helpers will set up user-level services and install required packages automatically.
-- Works on Fedora, Arch, and other distributions using standard tools.
+- Currently has not been tested for Artix! 
 - Re-run any time from the repo root (do not `cd` into `install-scripts`).
 
+ **For OpenRC**
 - `./install-scripts/battery-monitor.sh`
   - Installs: `acpi`, `libnotify`
   - Creates: `~/.config/hypr/scripts/battery-monitor.sh` and user service `battery-monitor.service`
-  - Manage: `systemctl --user status|start|stop battery-monitor`
+  - Manage: `rc-service battery-monitor status|start|stop`
 - `./install-scripts/disk-monitor.sh`
   - Installs: `libnotify`
   - Creates: `~/.config/hypr/scripts/disk-monitor.sh` and user service `disk-monitor.service`
-  - Manage: `systemctl --user status|start|stop disk-monitor`
+  - Manage: `rc-service disk-monitor status|start|stop`
 - `./install-scripts/temp-monitor.sh`
   - Installs: `lm_sensors`, `libnotify`
   - Detects sensors (runs `sudo sensors-detect --auto` once)
   - Creates: `~/.config/hypr/scripts/temp-monitor.sh` and user service `temp-monitor.service`
-  - Manage: `systemctl --user status|start|stop temp-monitor`
+  - Manage: `rc-service temp-monitor status|start|stop`
     > Packages above are installed by the respective installer scripts; no manual action is required. If you prefer package pre-install via the main package list, ensure `acpi`, `lm_sensors`, and `libnotify` are present in your setup.
 
 #### 🛣️ Roadmap:
