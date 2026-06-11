@@ -1,5 +1,5 @@
 <div align="center">
-
+# !! WARNING !! Porting is incomplete !!
 # 💌 ** KooL's Arch - Hyprland Install Script (ported for Artix)** 💌
 
 <p align="center">
